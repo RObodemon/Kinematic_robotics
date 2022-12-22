@@ -19,7 +19,7 @@ namespace eleTraj
         std::vector<double> traj(n+2,0);
         double temp = (t1-t0)/n;
         
-        std::ofstream fout("C:/Users/Henyue Guan/Desktop/DSC/Robot/Robotics Arm/Project/Trajectories/data_plot/linear_trj.txt",std::ios::out);
+        std::ofstream fout("add your own directories/data_plot/linear_trj.txt",std::ios::out);
         if (fout.is_open() == false)
         {
             std::cout << "open file" << " " << "fails\n";
