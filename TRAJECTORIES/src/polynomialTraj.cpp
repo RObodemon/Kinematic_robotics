@@ -25,7 +25,7 @@ namespace eleTraj
             std::cout << "open file" << " " << "fails\n";
         }
 
-        for(int i=0;i<n;i++)
+        for(int i=0;i<=n;i++)
         {
             if(i==12)
             {
