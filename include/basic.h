@@ -35,5 +35,7 @@ namespace basic
     // angle calculate
     double angleCalculate(Eigen::Vector3d const S1, Eigen::Vector3d const S2,const Eigen::Vector3d c);
 
+    // Trigonometric Solution of A*c1 + B*s1 + D = 0
+    double trigonometric(double A, double B, double D);
 }
 #endif 
