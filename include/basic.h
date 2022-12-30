@@ -35,7 +35,9 @@ namespace basic
     // angle calculate
     double angleCalculate(Eigen::Vector3d const S1, Eigen::Vector3d const S2,const Eigen::Vector3d c);
 
+    // get angle through sine and cosine
+    double angleGet();
     // Trigonometric Solution of A*c1 + B*s1 + D = 0
-    double trigonometric(double A, double B, double D);
+    std::vector<double> trigonometric(double A, double B, double D);
 }
 #endif 
