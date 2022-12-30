@@ -1,9 +1,11 @@
 #include"kinematic.h"
 #include "basic.h"
 #define PI 3.1415926
-namespace kine
+
+
+namespace rKinematics
 {
-    std::vector<double> closeLoopAnalysis(Eigen::Vector3d PtoolTo6, Eigen::Vector3d PtoolToF,
+    std::vector<double> closeLoop(Eigen::Vector3d PtoolTo6, Eigen::Vector3d PtoolToF,
         Eigen::Vector3d s6ToF, Eigen::Vector3d a67ToF )
     {
         Eigen::Vector3d xi,yj,zk;
@@ -66,5 +68,37 @@ namespace kine
         // A71, S7, S1, alpha71, theta7, gamma1
         std::vector<double> param = {A71, S7, S1, alpha71, theta7, gamma1};
         return param;
+    }
+
+    std::vector<double> reverseMain()
+    {
+        // 1, close the loop and get the parameters
+
+        // 2, determine wich group
+
+        // 3, reverse kinematics
+    }
+
+    // Group 1 spatial mechanisims
+    // R-3C // 2R-P-2C // 3R-2P-C // 4R-3P
+
+    // R-3C
+    std::vector<double> oneR(std::vector<double> a, std::vector<double> alpha, std::vector<double> S, std::vector<double> theta)
+    {
+        
+    }
+
+    std::vector<double> twoR()
+    {
+
+    }
+
+    std::vector<double> threeR()
+    {
+
+    }
+    std::vector<double> fourR()
+    {
+
     }
 }
