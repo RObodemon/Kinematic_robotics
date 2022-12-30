@@ -102,15 +102,53 @@ namespace basic
         return angle;
     }
 
-    double trigonometric(double A, double B, double D)
+    double angleGet(double sine, double cosine)
+    {
+        double angle = 0;
+        if(cosine>=0)
+        {
+            angle =  asin(sine);
+        }
+        else
+        {
+            if(sine>=0)
+            {
+                angle = acos(cosine);
+            }
+            else
+            {
+                angle = -acos(cosine);
+            }
+        }
+    }
+
+    std::vector<double> trigonometric(double A, double B, double D)
     {
         if(A==0&&B==0)
         {
             std::cout<<"wrong input";
-            return 0;
+            return;
         }
 
-        
+        std::vector<double> result(2,PI);
+        if(A==0&&D==0&&B!=0)
+        {
+            result[0] = 0;
+            result[1] = 1;
+            return result;
+        }
+        if(A==D&&A!=0&&B==0)
+        {
+            return result;
+        }
+
+        double sinGamma = B/sqrt(A*A+B*B);
+        double cosGamma = A/sqrt(A*A+B*B);
+        double gamma = angleGet(sinGamma,cosGamma);
+
+        result[0] = gamma + acos(-D/sqrt(A*A+B*B));
+        result[1] = gamma - acos(-D/sqrt(A*A+B*B));
+        return result;
     }
     // std::vector<double> octagonalEqu(const std::vector<double> coefficients)
     // {
