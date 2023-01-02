@@ -6,6 +6,10 @@
 
 namespace basic
 {
+    // rotated matrix=========================================================================
+    // theta: rotated angle
+    // axis: x,y,z, or another vector
+    // return: Rotated Matrix
     Eigen::MatrixXd rotate(double theta, char axis, Eigen::VectorXd _w = {0,0,0})
     {
         Eigen::VectorXd w = w;
@@ -35,7 +39,7 @@ namespace basic
         return Rot;
     }
 
-    std::vector<double> rRotate(Eigen::MatrixXd R)
+    std::vector<double> rRotate(Eigen::Matrix3d R)
     {
         std::vector<double> result(4,0);
         Eigen::Matrix3d I = Eigen::Matrix3d::Identity();
@@ -61,6 +65,29 @@ namespace basic
         result[1] = temp*(R(2,1)-R(1,2));
         result[2] = temp*(R(0,2)-R(2,0));
         result[3] = temp*(R(1,0)-R(0,1));
+
+        return result;
+    }
+
+    // skew-symmetric========================================================================
+    // x: vector(1,2,3)
+    // return it's skew-symmetric matrix
+    Eigen::MatrixXd skewSymmetric(Eigen::Vector3d x)
+    {
+        Eigen::MatrixXd result(3,3);
+        result<<0,     -x[2], x[1], 
+                x[2],  0,     -x[0],
+                -x[1], x[0],  0;
+
+        return result;
+    }
+    // reverse skew-symmetric===============================================================
+    // R:      3x3 skewSymmetric matrix
+    // return: vecttor(1,2,3)
+    Eigen::VectorXd skewSymmetricReverse(Eigen::Matrix3d R)
+    {
+        Eigen::VectorXd result(3);
+        result <<R(2,1), -R(2,0),R(1,0);
 
         return result;
     }
@@ -149,6 +176,21 @@ namespace basic
         result[0] = gamma + acos(-D/sqrt(A*A+B*B));
         result[1] = gamma - acos(-D/sqrt(A*A+B*B));
         return result;
+    }
+
+    // get the rotation matrix through matrix of exponential so(3)==========================
+    // wTheta: [w_theta] = so(3) (skew-symmetrc matrix)
+    // return: A rotation matrix
+    Eigen::MatrixXd matrixExp3(Eigen::Matrix3d wTheta)
+    {
+        Eigen::VectorXd wtheta = skewSymmetricReverse(wTheta);
+        double theta = wtheta.norm();
+        Eigen::MatrixXd w = wTheta/theta;
+
+        Eigen::MatrixXd R(3,3);
+        R = Eigen::MatrixXd::Identity(3,3) + sin(theta)*w + (1-cos(theta))*w*w;
+        return R;
+
     }
     // std::vector<double> octagonalEqu(const std::vector<double> coefficients)
     // {
