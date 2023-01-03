@@ -3,7 +3,7 @@
 #define PI 3.1415926
 
 
-namespace rKinematics
+namespace iKinematics
 {
     std::vector<double> closeLoop(Eigen::Vector3d PtoolTo6, Eigen::Vector3d PtoolToF,
         Eigen::Vector3d s6ToF, Eigen::Vector3d a67ToF )
@@ -70,35 +70,63 @@ namespace rKinematics
         return param;
     }
 
-    std::vector<double> reverseMain()
-    {
-        // 1, close the loop and get the parameters
-
-        // 2, determine wich group
-
-        // 3, reverse kinematics
-    }
-
-    // Group 1 spatial mechanisims
-    // R-3C // 2R-P-2C // 3R-2P-C // 4R-3P
-
-    // R-3C
-    std::vector<double> oneR(std::vector<double> a, std::vector<double> alpha, std::vector<double> S, std::vector<double> theta)
+    double Z(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta)
     {
         
     }
-
-    std::vector<double> twoR()
+    double Xstar(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta)
     {
 
     }
 
-    std::vector<double> threeR()
+    double Y(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta)
     {
 
     }
-    std::vector<double> fourR()
-    {
 
+    double Z(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta)
+    {
+        
+        if(size(num)==1)
+        {
+            double alphaij = alpha[0];
+            double alphajk = alpha[1];
+            double thetaj = theta[0];
+            double Zresult = cos(alphajk)*cos(alphaij)-sin(alphajk)*sin(alphaij)*cos(thetaj);
+
+            return Zresult;
+        }
+
+
+        std::vector<int> numNew;
+        numNew.assign(num.begin(), num.end()-1);
+        std::vector<double> alphaNew;
+        alphaNew.assign(alpha.begin(), alpha.end()-1);
+        std::vector<double> thetaNew;
+        thetaNew.assign(theta.begin(), theta.end()-1);
+
+        double alphaTemp = *(alpha.end()-1);
+        double thetaTemp = *(theta.end()-1);
+        double sinAlpha = sin(alphaTemp);
+        double cosAlpha = cos(alphaTemp);
+
+        double sinTheta = sin(thetaTemp);
+        double cosTheta = cos(thetaTemp);
+        double Zresult = sinAlpha*(X(numNew, alphaNew, thetaNew)*sinTheta + Y(numNew, alphaNew, thetaNew)*cosTheta) + 
+                                   cosAlpha*Z(numNew, alphaNew, thetaNew);
+
+        return Zresult;
     }
+    // Given the robotics parameters can help calculate the reverse kinematics
+    std::vector<double> reverseMain()
+    {
+        // 1, get the robotic arm parameters (Open chains)
+
+        // 2, get the seven parameters to close the loop
+
+        // 3, determine wich group
+
+        // 4, reverse kinematics
+    }
+    
 }
