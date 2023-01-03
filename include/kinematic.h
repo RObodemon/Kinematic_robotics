@@ -2,7 +2,7 @@
 #include<cmath>
 #include<Eigen/Dense>
 
-namespace rKinematics
+namespace iKinematics
 {
     // Help to get the parameters which are used to help do the reverse kinematics
     // output parameters:
@@ -14,24 +14,12 @@ namespace rKinematics
     // Given the robotics parameters can help calculate the reverse kinematics
     std::vector<double> reverseMain();
     
-    // Group 1 spatial mechanisims
-    // R-3C // 2R-P-2C // 3R-2P-C // 4R-3P
+    // Derivation of fundamental sine, sine-cosine, and cosine laws
+    double X(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta);
 
-    std::vector<double> twoR();
+    double Xstar(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta);
 
-    std::vector<double> oneR();
+    double Y(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta);
 
-    std::vector<double> threeR();
-
-    std::vector<double> fourR();
-
-    // Grpup 2 spatial mechanisims
-    // 3R-2C // 4R-P-C // 5R-2P
-
-
-    // Grpup 3 spatial mechanisims
-    // 5R-C // 6R-P 
-    
-    // Group 4 spatial mechanisims
-    // 7R
+    double Z(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta);
 }
