@@ -8,57 +8,60 @@
 namespace basic
 {
 
-    // rotated matrix=======================================================================
+    // rotated matrix==========================================================================
     // theta:  rotated angle
     // axis:   x,y,z, or another vector
     // return: Rotated Matrix
     Eigen::MatrixXd rotate(double theta, char axis, Eigen::VectorXd _w = {0,0,0});
 
-    // given R (SO(3))======================================================================
+    // given R (SO(3))=========================================================================
     // find angle ([0,pi],(-pi,0)), unit rotation axis
     // return a vector: fist element is angle
     //                  last three elements are the axis
     std::vector<double> rRotate(Eigen::Matrix3d R);
 
-    // skew-symmetric=======================================================================
+    // skew-symmetric==========================================================================
     // x:      vector(1,2,3)
     // return: it's skew-symmetric matrix
     Eigen::MatrixXd skewSymmetric(Eigen::Vector3d x);
 
-    // reverse skew-symmetric===============================================================
+    // reverse skew-symmetric==================================================================
     // R:      3x3 skewSymmetric matrix
     // return: vecttor(1,2,3)
     Eigen::VectorXd skewSymmetricReverse(Eigen::Matrix3d R);
 
-    // get the rotation matrix through matrix of exponential so(3)==========================
+    // get the rotation matrix through matrix of exponential so(3)=============================
     // wTheta: [w_theta] = so(3)
     // return: A rotation matrix
     Eigen::MatrixXd matrixExp3(Eigen::Matrix3d wTheta);
 
+    // get the  matrix of exponential so(3) throuth rotation matrix============================
+    // R: A rotation matrix
+    // return [w_theta] = so(3)
+    Eigen::MatrixXd MatrixLog3(Eigen::Matrix3d R);
+
+    // get the transformation matrix===========================================================
+    // input DH parameters
+    Eigen::MatrixXd trans(double a,double alpha,double d,double theta);
+
+    // inverse of the transformation matrix====================================================
+    Eigen::MatrixXd TransInv(Eigen::Matrix4d T);
+
     //std::vector<double> solveBiQuadratics(std::vector<double> coefficients);
 
     //std::vector<double> octagonalEqu(const std::vector<double> coefficients);
-    
-    // Function: 获得绕某个轴旋转一定角度的旋转矩阵
-    // Inputs:   输入旋转轴的向量，旋转角度
-    // Outputs:  输出旋转矩阵
 
-    // Function: 获得旋转轴的单位矩阵
-    // Inputs:   输入旋转矩阵
-    // Outputs:  输出旋转轴的单位向量
+    // angle calculate=========================================================================
+    double angleCalculate(Eigen::Vector3d const S1, Eigen::Vector3d const S2,
+                          const Eigen::Vector3d c);
 
-    // 获得 skew-symetric matrix
-
-
-    // angle calculate
-    double angleCalculate(Eigen::Vector3d const S1, Eigen::Vector3d const S2,const Eigen::Vector3d c);
-
-    // get angle through sine and cosine
+    // get angle through sine and cosine=======================================================
     double angleGet(double sine, double cosine);
-    // Trigonometric Solution of A*c1 + B*s1 + D = 0
+
+    // Trigonometric Solution of A*c1 + B*s1 + D = 0 ==========================================
     std::vector<double> trigonometric(double A, double B, double D);
 
-    // points
+    // points==================================================================================
     class point
     {
     public:
@@ -83,7 +86,7 @@ namespace basic
         double w;
     };
 
-    // Plane with unit
+    // Plane with unit ========================================================================
     // D0: meters
     // (A,B,C): dimensionless
     class plane
