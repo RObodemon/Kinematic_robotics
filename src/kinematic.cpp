@@ -70,7 +70,36 @@ namespace iKinematics
         return param;
     }
 
-    double Z(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta)
+    std::vector<double> trigonometric(double A, double B, double D)
+    {
+        if(A==0&&B==0)
+        {
+            std::cout<<"wrong input";
+            return;
+        }
+
+        std::vector<double> result(2,PI);
+        if(A==0&&D==0&&B!=0)
+        {
+            result[0] = 0;
+            result[1] = 1;
+            return result;
+        }
+        if(A==D&&A!=0&&B==0)
+        {
+            return result;
+        }
+
+        double sinGamma = B/sqrt(A*A+B*B);
+        double cosGamma = A/sqrt(A*A+B*B);
+        double gamma = basic::angleGet(sinGamma,cosGamma);
+
+        result[0] = gamma + acos(-D/sqrt(A*A+B*B));
+        result[1] = gamma - acos(-D/sqrt(A*A+B*B));
+        return result;
+    }
+
+    double X(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta)
     {
         
     }
