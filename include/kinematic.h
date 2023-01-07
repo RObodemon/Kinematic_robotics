@@ -1,6 +1,7 @@
 #include<vector>
 #include<cmath>
 #include<Eigen/Dense>
+#include<iostream>
 
 namespace iKinematics
 {
@@ -13,6 +14,9 @@ namespace iKinematics
 
     // Given the robotics parameters can help calculate the reverse kinematics
     std::vector<double> reverseMain();
+
+    // Trigonometric Solution of A*c1 + B*s1 + D = 0 ==========================================
+    std::vector<double> trigonometric(double A, double B, double D);
     
     // Derivation of fundamental sine, sine-cosine, and cosine laws
     double X(std::vector<int> num, std::vector<double> alpha, std::vector<double> theta);
