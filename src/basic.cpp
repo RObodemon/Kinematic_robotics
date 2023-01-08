@@ -168,6 +168,7 @@ namespace basic
     {
         // dynamic size
         Eigen::Matrix3d R = T.block(0,0,3,3);
+
         // fixed size
         // Eigen::Matrix3d R = T.block<3,3>(0,0);
 
@@ -245,35 +246,72 @@ namespace basic
         }
     }
 
-    std::vector<double> trigonometric(double A, double B, double D)
+    // Returns the se(3) matrix corresponding to a 6-vector twist V.===========================
+    // V: a 6-vector twist V.
+    Eigen::MatrixXd twistTose3(Eigen::VectorXd V)
     {
-        if(A==0&&B==0)
-        {
-            std::cout<<"wrong input";
-            return;
-        }
+        Eigen::VectorXd w = V.block(0,0,3,1);
+        Eigen::MatrixXd skewOfw = skewSymmetric(w);
 
-        std::vector<double> result(2,PI);
-        if(A==0&&D==0&&B!=0)
-        {
-            result[0] = 0;
-            result[1] = 1;
-            return result;
-        }
-        if(A==D&&A!=0&&B==0)
-        {
-            return result;
-        }
+        Eigen::Matrix3d v = V.block(3,0,3,1);
 
-        double sinGamma = B/sqrt(A*A+B*B);
-        double cosGamma = A/sqrt(A*A+B*B);
-        double gamma = angleGet(sinGamma,cosGamma);
+        Eigen::MatrixXd temp;
+        temp.resize(3,4);
+        temp<< skewOfw, v;
 
-        result[0] = gamma + acos(-D/sqrt(A*A+B*B));
-        result[1] = gamma - acos(-D/sqrt(A*A+B*B));
+        Eigen::MatrixXd result;
+        result.resize(4,4);
+        result<< temp,
+                 0, 0, 0, 0;
+
         return result;
     }
 
+    // Returns the 6-vector twist corresponding to an se(3) matrix=============================
+    Eigen::VectorXd se3Totwist(Eigen::MatrixXd T)
+    {
+        Eigen::VectorXd result(6,0);
+        result<< T(2,1), -T(2,0), T(1,0), T(0,3), T(1,3), T(2,3);
+
+        return result;
+    }
+
+    // ========================================================================================
+    // 6 × 6 adjoint representation [AdT ] of the homogeneous transformation matrix
+    Eigen::MatrixXd adJoint(Eigen::MatrixXd T)
+    {
+        Eigen::MatrixXd R = T.block(0,0,3,3);
+        Eigen::VectorXd P = T.block(0,3,3,1);
+        Eigen::MatrixXd skewP = skewSymmetric(P);
+        Eigen::MatrixXd rP = skewP*R;
+        Eigen::MatrixXd zero = Eigen::MatrixXd::Zero(3,3);
+        Eigen::MatrixXd temp1;
+        temp1.resize(3,6);
+        temp1<< R, zero;
+
+        Eigen::MatrixXd temp2;
+        temp2.resize(3,6);
+        temp2<< rP, R;
+
+        Eigen::MatrixXd result(6,6);
+        result<< temp1, 
+                 temp2;
+
+        return result;
+    }
+
+    // s: angular velocity ====================================================================
+    // q: point on the axis
+    // h: pitch
+    // return a twist V(w,v)
+    Eigen::VectorXd screwTotwist(Eigen::Vector3d q, Eigen::Vector3d s, double h)
+    {
+        Eigen::VectorXd v = q.cross(s) + h*s;
+        Eigen::VectorXd twist(6,1);
+        twist<< s(0), s(1), s(2), twist(0), twist(1), twist(2);
+
+        return twist;
+    }
     // std::vector<double> octagonalEqu(const std::vector<double> coefficients)
     // {
     //     double a1,b1,d1,e1,f1,g1,h1,i1,j1,a2,b2,d2,e2,f2,g2,h2,i2,j2;
