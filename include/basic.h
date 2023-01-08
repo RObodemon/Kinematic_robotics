@@ -58,9 +58,23 @@ namespace basic
     // get angle through sine and cosine=======================================================
     double angleGet(double sine, double cosine);
 
-    // Trigonometric Solution of A*c1 + B*s1 + D = 0 ==========================================
-    std::vector<double> trigonometric(double A, double B, double D);
+    // Returns the se(3) matrix corresponding to a 6-vector twist V.===========================
+    // V: a 6-vector twist V.
+    Eigen::MatrixXd twistTose3(Eigen::VectorXd V);
 
+    // Returns the 6-vector twist corresponding to an se(3) matrix=============================
+    Eigen::VectorXd se3Totwist(Eigen::MatrixXd T);
+
+    // ========================================================================================
+    // 6 × 6 adjoint representation [AdT ] of the homogeneous transformation matrix
+    Eigen::MatrixXd adJoint(Eigen::MatrixXd T);
+
+    // s: angular velocity
+    // q: point on the axis
+    // h: pitch
+    // return a twist V(w,v)
+    Eigen::VectorXd screwTotwist(Eigen::Vector3d q, Eigen::Vector3d s, double h);
+    
     // points==================================================================================
     class point
     {
